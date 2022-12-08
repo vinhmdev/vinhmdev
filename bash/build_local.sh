@@ -4,9 +4,13 @@ cd ../
 flutter clean
 flutter pub get
 flutter build web
-rm -rfv ../vinhmdev.github.io/www/
-mkdir ../vinhmdev.github.io/www/
-cp -rfv ./build/web/** ../vinhmdev.github.io/www
-cd ./bash || return
+
+cd ../vinhmdev.github.io/ || return
+git rm -rfv .
+cd ../vinhmdev/ || return
+
+cp -rfv ./build/web/** ../vinhmdev.github.io
+
+cd bash || return
 
 echo "SUCCESS BUILD LOCAL"
