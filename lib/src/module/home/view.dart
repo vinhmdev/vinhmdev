@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vinhmdev/l10n/generate/app_localizations.dart';
 
 import 'cubit.dart';
 import 'state.dart';
@@ -17,8 +18,15 @@ class HomePage extends StatelessWidget {
 
   Widget _buildPage(BuildContext context) {
     final cubit = BlocProvider.of<HomeCubit>(context);
+    var lang = AppLocalizations.of(context);
 
-    return Container();
+    return ListView(
+      children: [
+        Text(
+          lang.homePage,
+        )
+      ],
+    );
   }
 }
 

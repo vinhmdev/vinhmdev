@@ -7,7 +7,7 @@ import 'package:vinhmdev/src/module/global/cubit.dart';
 import 'package:vinhmdev/src/module/global/state.dart';
 import 'package:vinhmdev/src/module/index/view.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
             ],
             initialRoute: RouterName.index,
             routes: {
-              RouterName.index: (_) => const IndexPage(),
+              RouterName.index: (_) => IndexPage(),
             },
           );
         },

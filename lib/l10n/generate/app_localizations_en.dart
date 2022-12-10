@@ -5,8 +5,11 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get homePage => 'Trang chủ';
+  String get appTitle => 'Vinh mDev | Utilities and research';
 
   @override
-  String get setting => 'Cài đặt';
+  String get homePage => 'Home';
+
+  @override
+  String get settingPage => 'Setting';
 }

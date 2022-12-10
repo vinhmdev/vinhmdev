@@ -93,17 +93,23 @@ abstract class AppLocalizations {
     Locale('vi')
   ];
 
+  /// No description provided for @appTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vinh mDev | Utilities and research'**
+  String get appTitle;
+
   /// No description provided for @homePage.
   ///
   /// In en, this message translates to:
-  /// **'Trang chủ'**
+  /// **'Home'**
   String get homePage;
 
-  /// No description provided for @setting.
+  /// No description provided for @settingPage.
   ///
   /// In en, this message translates to:
-  /// **'Cài đặt'**
-  String get setting;
+  /// **'Setting'**
+  String get settingPage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -11,7 +11,9 @@ import 'state.dart';
 
 class IndexPage extends StatelessWidget {
 
-  const IndexPage({super.key});
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  IndexPage({super.key});
 
   void switchDrawer(BuildContext context) {
     if (Scaffold.of(context).isDrawerOpen) {
@@ -31,7 +33,7 @@ class IndexPage extends StatelessWidget {
   }
 
   Widget _buildPage(BuildContext context) {
-    final cubit = BlocProvider.of<IndexCubit>(context);
+    // final cubit = BlocProvider.of<IndexCubit>(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -57,31 +59,40 @@ class IndexPage extends StatelessWidget {
               icon: const Icon(Icons.language),
             ),
           ],
-        ),
-        drawer: const DrawerIndexPage(),
-        body: BlocBuilder<IndexCubit, IndexState>(
-          bloc: cubit,
-          builder: (context, state) {
-            switch (state.routerPage) {
-              case RouterName.home:
-                return const HomePage();
-              case RouterName.setting:
-                return SettingPage();
-              default:
-                return const SizedBox.shrink();
-            }
-          },
-        )
+      ),
+      drawer: DrawerIndexPage(navigatorKey: navigatorKey),
+      body: Navigator(
+        key: navigatorKey,
+        initialRoute: RouterName.home,
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case RouterName.home:
+              return MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              );
+            case RouterName.setting:
+              return MaterialPageRoute(
+                builder: (context) => const SettingPage(),
+              );
+            default:
+              return MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              );
+          }
+        },
+      ),
     );
   }
 }
 
 class DrawerIndexPage extends StatelessWidget {
-  const DrawerIndexPage({super.key});
+  const DrawerIndexPage({super.key, required this.navigatorKey});
+
+  final GlobalKey<NavigatorState> navigatorKey;
 
   void gotoPage(BuildContext context, String routerName) {
     final cubit = BlocProvider.of<IndexCubit>(context);
-    cubit.setRouter(routerName);
+    navigatorKey.currentState!.pushNamed(routerName);
 
     if (Scaffold.of(context).isDrawerOpen) {
       Scaffold.of(context).closeDrawer();
@@ -97,11 +108,15 @@ class DrawerIndexPage extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () => gotoPage(context, RouterName.home),
-            child: const Text('Trang chủ'),
+            child: Text(
+              lang.homePage,
+            ),
           ),
           TextButton(
             onPressed: () => gotoPage(context, RouterName.setting),
-            child: const Text('Cài đặt'),
+            child: Text(
+              lang.settingPage,
+            ),
           ),
         ],
       ),
