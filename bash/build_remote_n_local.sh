@@ -10,7 +10,7 @@ cd ../../vinhmdev.github.io/ || return
 git pull
 cd ../vinhmdev/bash/ || return
 
-sh build_local.sh
+bash build_local.sh
 
 cd ../../vinhmdev.github.io/ || return
 git add .

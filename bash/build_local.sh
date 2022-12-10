@@ -2,15 +2,16 @@
 
 cd ../
 flutter clean
-flutter pub get
-flutter build web
+cd bash || return
 
+bash build_library.sh
+
+cd .. || return
+flutter build web
 cd ../vinhmdev.github.io/ || return
 git rm -rfv .
 cd ../vinhmdev/ || return
-
 cp -rfv ./build/web/** ../vinhmdev.github.io
-
 cd bash || return
 
 echo "SUCCESS BUILD LOCAL"
