@@ -13,7 +13,7 @@ git commit -a -m "build vinhmdev"
 git push
 cd bash/ || return
 
-cd ../../vinhmdev.github.io/ || return
+cd ../../vindatahmdev.github.io/ || return
 git add .
 git commit -a -m "build vinhmdev"
 git push
