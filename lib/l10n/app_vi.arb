@@ -1,6 +1,22 @@
 {
-    "appTitle": "Vinh mDev | Tiện ích và nghiên cứu",
+    "appTitle": "Quản lý cá nhân",
+    "appAuthor": "mDev",
+    "indexBack": "Trở lại",
 
-    "homePage": "Trang chủ",
-    "settingPage": "Cài đặt"
+    "homePage": "Tổng quan",
+
+    "settingPage": "Cài đặt",
+    "settingDesign": "Cài đặt hiển thị.",
+    "settingLanguage": "Ngôn ngữ:",
+    "settingLanguageHint": "Chọn ngôn ngữ của bạn",
+    "settingLanguageVi": "Tiếng Việt",
+    "settingLanguageEn": "English",
+    "settingTheme": "Chủ đề:",
+    "settingThemeHint": "Chọn ngôn ngữ của bạn",
+    "settingThemeSystem": "Theo hệ thống",
+    "settingThemeLight": "Chủ đề sáng",
+    "settingThemeDark": "Chủ đề tối",
+    "settingSettingSave": "Lưu lại",
+
+    "taskManagerPage": "Quản lý công việc"
 }

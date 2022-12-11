@@ -95,21 +95,105 @@ abstract class AppLocalizations {
 
   /// No description provided for @appTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Vinh mDev | Utilities and research'**
+  /// In vi, this message translates to:
+  /// **'Quản lý cá nhân'**
   String get appTitle;
+
+  /// No description provided for @appAuthor.
+  ///
+  /// In vi, this message translates to:
+  /// **'mDev'**
+  String get appAuthor;
+
+  /// No description provided for @indexBack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trở lại'**
+  String get indexBack;
 
   /// No description provided for @homePage.
   ///
-  /// In en, this message translates to:
-  /// **'Home'**
+  /// In vi, this message translates to:
+  /// **'Tổng quan'**
   String get homePage;
 
   /// No description provided for @settingPage.
   ///
-  /// In en, this message translates to:
-  /// **'Setting'**
+  /// In vi, this message translates to:
+  /// **'Cài đặt'**
   String get settingPage;
+
+  /// No description provided for @settingDesign.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cài đặt hiển thị.'**
+  String get settingDesign;
+
+  /// No description provided for @settingLanguage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngôn ngữ:'**
+  String get settingLanguage;
+
+  /// No description provided for @settingLanguageHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn ngôn ngữ của bạn'**
+  String get settingLanguageHint;
+
+  /// No description provided for @settingLanguageVi.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếng Việt'**
+  String get settingLanguageVi;
+
+  /// No description provided for @settingLanguageEn.
+  ///
+  /// In vi, this message translates to:
+  /// **'English'**
+  String get settingLanguageEn;
+
+  /// No description provided for @settingTheme.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chủ đề:'**
+  String get settingTheme;
+
+  /// No description provided for @settingThemeHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn ngôn ngữ của bạn'**
+  String get settingThemeHint;
+
+  /// No description provided for @settingThemeSystem.
+  ///
+  /// In vi, this message translates to:
+  /// **'Theo hệ thống'**
+  String get settingThemeSystem;
+
+  /// No description provided for @settingThemeLight.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chủ đề sáng'**
+  String get settingThemeLight;
+
+  /// No description provided for @settingThemeDark.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chủ đề tối'**
+  String get settingThemeDark;
+
+  /// No description provided for @settingSettingSave.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu lại'**
+  String get settingSettingSave;
+
+  /// No description provided for @taskManagerPage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quản lý công việc'**
+  String get taskManagerPage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

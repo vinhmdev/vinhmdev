@@ -1,6 +1,23 @@
 {
-    "appTitle": "Vinh mDev | Utilities and research",
+    "appTitle": "Personal management",
+    "appAuthor": "mDev",
+    "indexBack": "Back",
 
-    "homePage": "Home",
-    "settingPage": "Setting"
+    "homePage": "Overview",
+
+    "settingPage": "Setting",
+    "settingDesign": "Deisgn",
+    "settingLanguage": "Language:",
+    "settingLanguageHint": "Select your language",
+    "settingLanguageVi": "Tiếng Việt",
+    "settingLanguageEn": "English",
+    "settingTheme": "Themes:",
+    "settingThemeHint": "Select your themes",
+    "settingThemeSystem": "System theme",
+    "settingThemeLight": "Light theme",
+    "settingThemeDark": "Dark theme",
+    "settingSettingSave": "Save",
+
+    "taskManagerPage": "Task manager"
+
 }

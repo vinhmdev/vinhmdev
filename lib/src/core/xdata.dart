@@ -4,7 +4,8 @@ import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 class XData {
   XData._();
 
-  static final String keyDefaultLocalization = 'defaultLocalization';
+  static const String keyDefaultLocalization = 'defaultLocalization';
+  static const String keyDefautlThemeMode = 'defautlThemeMode';
 
   static Dio? _dio;
   static Dio get dio {
@@ -31,4 +32,5 @@ class RouterName {
   static const String index = '/';
   static const String home = '${index}home/';
   static const String setting = '${index}setting/';
+  static const String taskManager = '${index}task-manager/';
 }

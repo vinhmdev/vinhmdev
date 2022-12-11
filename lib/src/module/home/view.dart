@@ -20,12 +20,14 @@ class HomePage extends StatelessWidget {
     final cubit = BlocProvider.of<HomeCubit>(context);
     var lang = AppLocalizations.of(context);
 
-    return ListView(
-      children: [
-        Text(
-          lang.homePage,
-        )
-      ],
+    return Scaffold(
+      body: ListView(
+        children: [
+          Text(
+            lang.homePage,
+          )
+        ],
+      ),
     );
   }
 }

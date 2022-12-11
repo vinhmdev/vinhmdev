@@ -6,6 +6,7 @@ import 'package:vinhmdev/src/core/xdata.dart';
 import 'package:vinhmdev/src/module/global/cubit.dart';
 import 'package:vinhmdev/src/module/global/state.dart';
 import 'package:vinhmdev/src/module/index/view.dart';
+import 'package:vinhmdev/src/module/task_manager/view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,18 +15,62 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  
+  Widget wrapRouter(Widget page) {
+    return BlocBuilder<GlobalCubit, GlobalState>(
+      buildWhen: (pre, cur) {
+        return pre.status != cur.status;
+      },
+      builder: (context, state) {
+        return Stack(
+          children: [
+            page,
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              child: Visibility(
+                visible: state.status == InitStatus.loading,
+                child: const FlashPage(),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('>>> MyApp Rebuild');
     return BlocProvider(
       create: (context) => GlobalCubit(),
       child: BlocBuilder<GlobalCubit, GlobalState>(
+        buildWhen: (previous, current) {
+           bool isBuild = previous.locale?.languageCode != current.locale?.languageCode;
+           isBuild = isBuild || previous.themeMode.index != current.themeMode.index;
+           return isBuild;
+        },
         builder: (context, state) {
           return MaterialApp(
-            title: 'Vinh mDev | Tiện ích và nghiên cứu',
+            title: 'Quản lý cá nhân',
+            themeMode: state.themeMode,
             theme: ThemeData(
-              primarySwatch: Colors.blue,
+              primarySwatch: Colors.red,
+              primaryColor: Colors.red,
+              scaffoldBackgroundColor: Colors.grey.shade200,
+              cardTheme: const CardTheme(
+                margin: EdgeInsets.zero,
+              ),
+              listTileTheme: const ListTileThemeData(
+                horizontalTitleGap: 8,
+                minLeadingWidth: 0,
+                textColor: Colors.red,
+                iconColor: Colors.red
+              )
             ),
+            darkTheme: ThemeData.dark(),
             locale: state.locale,
             localizationsDelegates: const [
               AppLocalizations.delegate,
@@ -39,11 +84,34 @@ class MyApp extends StatelessWidget {
             ],
             initialRoute: RouterName.index,
             routes: {
-              RouterName.index: (_) => IndexPage(),
+              RouterName.index: (context) {
+                return wrapRouter(IndexPage());
+              },
+              RouterName.taskManager: (context) {
+                return wrapRouter(const TaskManagerPage());
+              }
             },
           );
         },
       ),
     );
   }
+}
+
+class FlashPage extends StatelessWidget {
+  const FlashPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Image.asset(
+        'assets/images/error.jpeg',
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        fit: BoxFit.contain,
+      ),
+    );
+  }
+
 }
