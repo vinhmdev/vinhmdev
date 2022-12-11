@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "725041116937",
+    "project_id": "vinhmdev",
+    "storage_bucket": "vinhmdev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725041116937:android:1a55d61f2104a4381dc5d8",
+        "android_client_info": {
+          "package_name": "com.vinhmdev.pm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725041116937-cib84cjnn1ldh60tn1v4dp3dkq3p3h5r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_4aAx7HRBiXLX5gee-JxsC-zj5mNrsII"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725041116937-cib84cjnn1ldh60tn1v4dp3dkq3p3h5r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "725041116937-goaoin4v32c3oh2djr9i504uu8gokjca.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vinhmdev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

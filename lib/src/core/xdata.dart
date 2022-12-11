@@ -1,11 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:vinhmdev/firebase_options.dart';
 
 class XData {
   XData._();
 
   static const String keyDefaultLocalization = 'defaultLocalization';
   static const String keyDefautlThemeMode = 'defautlThemeMode';
+  static const String keyTopicSubcribeNotification = 'notifications';
 
   static Dio? _dio;
   static Dio get dio {
@@ -25,6 +33,33 @@ class XData {
     );
     return _sharedPref!;
   }
+
+  static Future<void> initConfig() async {
+    try {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      // await fm.subscribeToTopic(keyTopicSubcribeNotification); // don't support web sdk
+      FirebaseMessaging.onMessage.listen((event) {
+        print('>>> onMessage.listen: >>> ${event.data} ${event.notification?.title} ${event.notification?.body}');
+      });
+    } catch (_) {
+      debugPrint(StackTrace.fromString(_.toString()).toString());
+      if (kDebugMode) {
+        rethrow;
+      }
+    }
+    try {
+      print('>>> fm.getToken() ${await fm.getToken()}');
+    } catch (_) {
+      print('>>> error: >>> $_');
+    }
+  }
+
+  static FirebaseAnalytics get fa => FirebaseAnalytics.instance;
+  static FirebaseDatabase get fdb => FirebaseDatabase.instance;
+  static FirebaseMessaging get fm => FirebaseMessaging.instance;
+
 }
 
 class RouterName {

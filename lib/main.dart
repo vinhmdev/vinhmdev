@@ -10,6 +10,9 @@ import 'package:vinhmdev/src/module/task_manager/view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await XData.initConfig();
+
   runApp(const MyApp());
 }
 
