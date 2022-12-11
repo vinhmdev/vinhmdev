@@ -9,7 +9,7 @@ bash build_library.sh
 cd .. || return
 flutter build web
 cd ../vinhmdev.github.io/ || return
-git rm -rv .
+git rm -rf .
 cd ../vinhmdev/ || return
 cp -rfv ./build/web/** ../vinhmdev.github.io
 cd bash || return
