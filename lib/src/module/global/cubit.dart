@@ -27,7 +27,6 @@ class GlobalCubit extends Cubit<GlobalState> {
         defaultState.themeMode = ThemeMode.dark;
       }
     }
-    await Future.delayed(Duration(seconds: 3));
     emit(defaultState);
   }
 
