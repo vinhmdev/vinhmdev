@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
       body: ListView(
         children: [
           Text(
-            'new Test ok ok ok',
+            lang.homePage,
           )
         ],
       ),
