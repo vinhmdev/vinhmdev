@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'state.dart';
+import 'index_state.dart';
 
 class IndexCubit extends Cubit<IndexState> {
   IndexCubit() : super(IndexState().init());

@@ -54,4 +54,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get taskManagerPage => 'Task manager';
+
+  @override
+  String get devApiCallPage => 'API Call';
 }

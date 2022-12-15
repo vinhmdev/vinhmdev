@@ -54,4 +54,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get taskManagerPage => 'Quản lý công việc';
+
+  @override
+  String get devApiCallPage => 'API Tinh gọn';
 }

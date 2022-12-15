@@ -3,10 +3,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:vinhmdev/l10n/generate/app_localizations.dart';
 import 'package:vinhmdev/src/core/xdata.dart';
-import 'package:vinhmdev/src/module/global/cubit.dart';
-import 'package:vinhmdev/src/module/global/state.dart';
-import 'package:vinhmdev/src/module/index/view.dart';
-import 'package:vinhmdev/src/module/task_manager/view.dart';
+import 'package:vinhmdev/src/module/dev/dev_api_call/dev_api_call_view.dart';
+import 'package:vinhmdev/src/module/global/global_cubit.dart';
+import 'package:vinhmdev/src/module/global/global_state.dart';
+import 'package:vinhmdev/src/module/index/index_view.dart';
+import 'package:vinhmdev/src/module/task_manager/task_manager_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,6 +63,9 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.red,
               primaryColor: Colors.red,
+              appBarTheme: const AppBarTheme(
+                elevation: 2,
+              ),
               scaffoldBackgroundColor: Colors.grey.shade200,
               cardTheme: const CardTheme(
                 margin: EdgeInsets.zero,
@@ -92,7 +96,10 @@ class MyApp extends StatelessWidget {
               },
               RouterName.taskManager: (context) {
                 return wrapRouter(const TaskManagerPage());
-              }
+              },
+              RouterName.devApiCall: (context) {
+                return wrapRouter(const DevApiCallPage());
+              },
             },
           );
         },

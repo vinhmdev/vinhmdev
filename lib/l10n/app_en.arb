@@ -18,6 +18,8 @@
     "settingThemeDark": "Dark theme",
     "settingSettingSave": "Save",
 
-    "taskManagerPage": "Task manager"
+    "taskManagerPage": "Task manager",
+
+    "devApiCallPage": "API Call"
 
 }

@@ -18,5 +18,7 @@
     "settingThemeDark": "Chủ đề tối",
     "settingSettingSave": "Lưu lại",
 
-    "taskManagerPage": "Quản lý công việc"
+    "taskManagerPage": "Quản lý công việc",
+
+    "devApiCallPage": "API Tinh gọn"
 }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vinhmdev/l10n/generate/app_localizations.dart';
 
-import 'cubit.dart';
-import 'state.dart';
+import 'global_cubit.dart';
+import 'global_state.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

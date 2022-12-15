@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'state.dart';
+import 'setting_state.dart';
 
 class SettingCubit extends Cubit<SettingState> {
   SettingCubit() : super(SettingState());

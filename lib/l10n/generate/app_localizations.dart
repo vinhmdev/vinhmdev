@@ -194,6 +194,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Quản lý công việc'**
   String get taskManagerPage;
+
+  /// No description provided for @devApiCallPage.
+  ///
+  /// In vi, this message translates to:
+  /// **'API Tinh gọn'**
+  String get devApiCallPage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

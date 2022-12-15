@@ -5,15 +5,21 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:vinhmdev/firebase_options.dart';
 
 class XData {
+
   XData._();
 
   static const String keyDefaultLocalization = 'defaultLocalization';
   static const String keyDefautlThemeMode = 'defautlThemeMode';
   static const String keyTopicSubcribeNotification = 'notifications';
+
+  static const List<String> devApiCallMethodRequest = ['GET', 'POST', 'PUT', 'DELETE', 'PATH'];
+  static const Map<String, String?> devApiCallHeaderRequest = {
+    'enctype': 'multipart/form-data',
+    'Authorization': null,
+  };
 
   static Dio? _dio;
   static Dio get dio {
@@ -68,4 +74,5 @@ class RouterName {
   static const String home = '${index}home/';
   static const String setting = '${index}setting/';
   static const String taskManager = '${index}task-manager/';
+  static const String devApiCall = '${index}dev-api-call/';
 }

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vinhmdev/l10n/generate/app_localizations.dart';
 import 'package:vinhmdev/src/core/xdata.dart';
-import 'package:vinhmdev/src/module/setting/view.dart';
+import 'package:vinhmdev/src/module/setting/setting_view.dart';
 
-import '../home/view.dart';
-import 'cubit.dart';
-import 'state.dart';
+import '../home/global_view.dart';
+import 'index_cubit.dart';
+import 'index_state.dart';
 
 class IndexPage extends StatelessWidget {
 
@@ -123,6 +123,13 @@ class DrawerIndexPage extends StatelessWidget {
         'prefixIcon': const Icon(Icons.task),
         'label': lang.taskManagerPage,
         'action': () => gotoPage(context, RouterName.taskManager, usingRoot: true),
+        'headLine': true,
+        'suffixIcon': const Icon(Icons.outbond_outlined),
+      },
+      {
+        'prefixIcon': const Icon(Icons.task),
+        'label': lang.devApiCallPage,
+        'action': () => gotoPage(context, RouterName.devApiCall, usingRoot: true),
         'headLine': true,
         'suffixIcon': const Icon(Icons.outbond_outlined),
       },

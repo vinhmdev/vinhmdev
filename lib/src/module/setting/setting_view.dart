@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vinhmdev/l10n/generate/app_localizations.dart';
-import 'package:vinhmdev/src/module/global/cubit.dart';
+import 'package:vinhmdev/src/module/global/global_cubit.dart';
 
-import 'cubit.dart';
-import 'state.dart';
+import 'setting_cubit.dart';
+import 'setting_state.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});

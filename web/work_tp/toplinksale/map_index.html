@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8" />
+    <!-- eKMap Platform JS -->
+    <script src='https://files.ekgis.vn/sdks/v2.0.0/ekmap-platform.min.js'></script>
+    <link href='https://files.ekgis.vn/sdks/v2.0.0/ekmap-platform.min.css' rel='stylesheet' />
+
+    <title>Base Map OSM Bright</title>
+    <style>
+        .map {
+            width: 100%;
+            height: calc(100vh - 15px);
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+    </style>
+</head>
+
+<body>
+<div style="width: 100%;">
+    <div id="divMapId" class="map"></div>
+</div>
+<script>
+
+        var lo = document.location.toString();
+        var url = new URL(lo)
+
+        var key = url.searchParams.get('key');
+        var lat = url.searchParams.get('lat');
+        var long = url.searchParams.get('long');
+
+        var map = new maplibregl.Map({
+            container: 'divMapId',center: [105, 17],
+            zoom: 4
+        });
+        var mapOSMBright = new ekmapplf.VectorBaseMap('OSM:Bright', key).addTo(map);
+    </script>
+</body>
+</html>
