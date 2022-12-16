@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 class AppUtils {
   AppUtils._();
 
-  static String prettyJson(Map<String, dynamic> json) {
-    return const JsonEncoder.withIndent('  ').convert(json);
+  static String prettyJson(dynamic json) {
+    try {
+      return const JsonEncoder.withIndent('  ').convert(json);
+    } catch (_) {
+      return json.toString();
+    }
   }
 
   static void unfocusKeyboard() {

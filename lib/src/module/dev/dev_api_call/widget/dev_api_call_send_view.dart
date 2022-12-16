@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_send_request_page.dart';
 
 import 'dev_api_call_send_response_page.dart';
 
-class DevApiCallSendPage extends StatefulWidget{
+class DevApiCallSendPage extends StatefulWidget {
   const DevApiCallSendPage({super.key});
 
   @override
   State<DevApiCallSendPage> createState() => _DevApiCallSendPageState();
 }
 
-class _DevApiCallSendPageState extends State<DevApiCallSendPage> with TickerProviderStateMixin {
+class _DevApiCallSendPageState extends State<DevApiCallSendPage>
+    with TickerProviderStateMixin {
 
   late TabController _tabController;
 
   @override
-  void initState(){
-    super.initState();
+  void initState() {
     _tabController = TabController(length: 2, vsync: this);
+    super.initState();
   }
 
   @override
@@ -40,7 +42,9 @@ class _DevApiCallSendPageState extends State<DevApiCallSendPage> with TickerProv
       body: TabBarView(
         controller: _tabController,
         children: [
-          DevApiCallSendRequestPage(),
+          DevApiCallSendRequestPage(
+            tabController: _tabController,
+          ),
           DevApiCallSendResponsePage(),
         ],
       ),

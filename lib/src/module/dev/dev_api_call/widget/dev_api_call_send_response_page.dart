@@ -31,7 +31,7 @@ class DevApiCallSendResponsePage extends StatelessWidget {
               children: [
                 InputJsonWidget(
                   textEditingController: TextEditingController(
-                    text: AppUtils.prettyJson(state?.response?.data ?? {}),
+                    text: AppUtils.prettyJson(state?.response?.data ?? '<Undefined>'), // todo lang
                   ),
                   title: 'Response', // todo lang
                   isShowAddJson: false,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +19,7 @@ enum JsonType {
 
 class DevApiCallSendRequestPage extends StatelessWidget {
 
+  final TabController tabController;
   final TextEditingController _inputMethod = TextEditingController();
   final TextEditingController _inputBaseApi = TextEditingController();
   final TextEditingController _inputPath = TextEditingController();
@@ -26,7 +28,7 @@ class DevApiCallSendRequestPage extends StatelessWidget {
   final TextEditingController _inputBodyJson = TextEditingController();
   final TextEditingController _inputCurlRequest = TextEditingController();
 
-  DevApiCallSendRequestPage({super.key});
+  DevApiCallSendRequestPage({super.key, required this.tabController});
 
   String get urlRequest {
     var url = '${_inputBaseApi.text}${_inputPath.text}';
@@ -38,7 +40,7 @@ class DevApiCallSendRequestPage extends StatelessWidget {
       return jsonDecode(_inputHeaderJson.text);
     }
     catch (_) {
-      print(">>> headerRequest convert error: $_");
+      log(">>> headerRequest convert error: $_");
       return {};
     }
   }
@@ -64,30 +66,38 @@ class DevApiCallSendRequestPage extends StatelessWidget {
   }
 
   Future<void> sendRequest(BuildContext context) async {
-    final cubit = BlocProvider.of<DevApiCallCubit>(context);
-    var path = urlRequest;
-    var query = '';
-    if (urlRequest.contains('?')){
-      path = urlRequest.substring(0, urlRequest.lastIndexOf('?'));
-      query = urlRequest.substring(urlRequest.lastIndexOf('?'));
-    }
-    queriesRequest.forEach((key, value) {
-      if (query.isNotEmpty) {
-        query += '&';
+    AppUtils.unfocusKeyboard();
+    try {
+      final cubit = BlocProvider.of<DevApiCallCubit>(context);
+      var path = urlRequest;
+      var query = '';
+      if (urlRequest.contains('?')){
+        path = urlRequest.substring(0, urlRequest.lastIndexOf('?'));
+        query = urlRequest.substring(urlRequest.lastIndexOf('?'));
       }
-      query += '$key=${Uri.encodeComponent((value ?? '').toString())}';
-    });
-    var uri = Uri.parse('$path$query');
-    cubit.sendRequest(
-      uri: uri,
-      headers: headerRequest,
-      body: bodyRequest,
-      method: _inputMethod.text,
-    );
+      queriesRequest.forEach((key, value) {
+        if (query.isNotEmpty) {
+          query += '&';
+        }
+        query += '$key=${Uri.encodeComponent((value ?? '').toString())}';
+      });
+      var uri = Uri.parse('$path$query');
+      await cubit.sendRequest(
+        uri: uri,
+        headers: headerRequest,
+        body: bodyRequest,
+        method: _inputMethod.text,
+      );
+    }
+    catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$_')));
+    }
+    tabController.animateTo(1);
   }
 
   @override
   Widget build(BuildContext context) {
+
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -166,17 +176,17 @@ class DevApiCallSendRequestPage extends StatelessWidget {
         ),
         const SizedBox(height: 12,),
         InputJsonWidget(
-          textEditingController: _inputHeaderJson,
-          iconTitle: Icon(Icons.add_box),
-          title: 'Header', // todo lang
-          label: 'Header json', // todo lang
-        ),
-        const SizedBox(height: 12,),
-        InputJsonWidget(
           textEditingController: _inputQueriesJson,
           iconTitle: Icon(Icons.add_box),
           title: 'Queries', // todo lang
           label: 'Queries json', // todo lang
+        ),
+        const SizedBox(height: 12,),
+        InputJsonWidget(
+          textEditingController: _inputHeaderJson,
+          iconTitle: Icon(Icons.add_box),
+          title: 'Header', // todo lang
+          label: 'Header json', // todo lang
         ),
         const SizedBox(height: 12,),
         InputJsonWidget(
@@ -188,7 +198,6 @@ class DevApiCallSendRequestPage extends StatelessWidget {
         const SizedBox(height: 12,),
         ElevatedButton.icon(
           onPressed: () async {
-            AppUtils.unfocusKeyboard();
             await sendRequest(context);
           },
           icon: const Icon(Icons.send),
@@ -222,6 +231,7 @@ class InputJsonWidget extends StatelessWidget {
   final bool isMonospacedFont;
 
   const InputJsonWidget({
+    super.key,
     this.textEditingController,
     this.iconTitle,
     this.bottom,
