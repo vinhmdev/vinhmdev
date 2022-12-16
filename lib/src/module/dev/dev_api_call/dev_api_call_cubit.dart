@@ -34,7 +34,7 @@ class DevApiCallCubit extends Cubit<DevApiCallState> {
     required Uri uri,
     String method = 'GET',
     Map<String, dynamic>? headers,
-    Map<String, dynamic>? body,
+    dynamic body,
   }) async {
     var path = uri.toString();
     if (method.trim().isEmpty) {

@@ -25,7 +25,7 @@ class RestDatasource {
     String method = 'GET',
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queries,
-    Map<String, dynamic>? body,
+    dynamic body,
   }) {
     return dio.request(
       path,

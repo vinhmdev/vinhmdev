@@ -21,7 +21,7 @@ class DevApiCallSendRequestPage extends StatelessWidget {
 
   final TabController tabController;
   final TextEditingController _inputMethod = TextEditingController();
-  final TextEditingController _inputBaseApi = TextEditingController();
+  final TextEditingController _inputBaseApi = TextEditingController(text: 'https://');
   final TextEditingController _inputPath = TextEditingController();
   final TextEditingController _inputHeaderJson = TextEditingController();
   final TextEditingController _inputQueriesJson = TextEditingController();
@@ -35,13 +35,13 @@ class DevApiCallSendRequestPage extends StatelessWidget {
     return url;
   }
 
-  Map<String, dynamic> get headerRequest {
+  Map<String, dynamic>? get headerRequest {
     try {
       return jsonDecode(_inputHeaderJson.text);
     }
     catch (_) {
       log(">>> headerRequest convert error: $_");
-      return {};
+      return null;
     }
   }
 
@@ -55,13 +55,15 @@ class DevApiCallSendRequestPage extends StatelessWidget {
     }
   }
 
-  Map<String, dynamic> get bodyRequest {
+  dynamic get bodyRequest {
     try {
       return jsonDecode(_inputBodyJson.text);
     }
     catch (_) {
-      log(">>> bodyRequest convert error: $_");
-      return {};
+      if (_inputBodyJson.text.isNotEmpty) {
+        return _inputBodyJson.text;
+      }
+      return null;
     }
   }
 
@@ -73,13 +75,16 @@ class DevApiCallSendRequestPage extends StatelessWidget {
       var query = '';
       if (urlRequest.contains('?')){
         path = urlRequest.substring(0, urlRequest.lastIndexOf('?'));
-        query = urlRequest.substring(urlRequest.lastIndexOf('?'));
+        query = urlRequest.substring(urlRequest.lastIndexOf('?') + 1);
       }
       queriesRequest.forEach((key, value) {
         if (query.isNotEmpty) {
           query += '&';
         }
-        query += '$key=${Uri.encodeComponent((value ?? '').toString())}';
+        query += '$key=${value ?? ''}';
+        if (query.isNotEmpty && !query.startsWith('?')){
+          query = '?$query';
+        }
       });
       var uri = Uri.parse('$path$query');
       await cubit.sendRequest(
@@ -122,6 +127,7 @@ class DevApiCallSendRequestPage extends StatelessWidget {
                     SizedBox(
                       width: 160,
                       child: Autocomplete(
+                        initialValue: _inputMethod.value,
                         fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
                           return TextFormField(
                             controller: textEditingController,

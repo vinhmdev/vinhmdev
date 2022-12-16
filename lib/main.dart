@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,15 @@ import 'package:vinhmdev/src/module/global/global_cubit.dart';
 import 'package:vinhmdev/src/module/global/global_state.dart';
 import 'package:vinhmdev/src/module/index/index_view.dart';
 import 'package:vinhmdev/src/module/task_manager/task_manager_view.dart';
+
+class _MyHttpOverride extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (cert, host, port) => true;
+  }
+}
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
