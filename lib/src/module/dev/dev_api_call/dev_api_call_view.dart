@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vinhmdev/l10n/generate/app_localizations.dart';
+import 'package:vinhmdev/src/datasource/rest_datasource.dart';
 
 import 'dev_api_call_cubit.dart';
 import 'dev_api_call_state.dart';
@@ -15,7 +16,9 @@ class DevApiCallPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => DevApiCallCubit(),
+      create: (BuildContext context) => DevApiCallCubit(
+        RepositoryProvider.of<RestDatasource>(context),
+      ),
       child: Builder(builder: (context) => _buildPage(context)),
     );
   }
@@ -36,9 +39,12 @@ class DevApiCallPage extends StatelessWidget {
           return state.tabView;
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => addApi(cubit),
-        child: const Icon(Icons.add),
+      floatingActionButton: Visibility(
+        visible: MediaQuery.of(context).viewInsets.bottom.toInt() <= 0,
+        child: FloatingActionButton(
+          onPressed: () => addApi(cubit),
+          child: const Icon(Icons.add),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BlocBuilder<DevApiCallCubit, DevApiCallState>(

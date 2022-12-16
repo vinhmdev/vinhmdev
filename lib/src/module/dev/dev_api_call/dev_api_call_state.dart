@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_send_view.dart';
 
@@ -28,8 +29,10 @@ class DevApiCallState {
 
 }
 
-class DevApiCallSendState extends DevApiCallState {
-
+class DevApiCallRequestState extends DevApiCallState {
+  final Response? response;
+  final DioError? dioError;
+  DevApiCallRequestState({this.response, this.dioError});
 }
 
 class DevApiCallHistoryState extends DevApiCallState {
