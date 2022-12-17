@@ -46,7 +46,7 @@ class DevApiCallPage extends StatelessWidget {
           child: const Icon(Icons.add),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
       bottomNavigationBar: BlocBuilder<DevApiCallCubit, DevApiCallState>(
         builder: (context, state) {
           return BottomNavigationBar(

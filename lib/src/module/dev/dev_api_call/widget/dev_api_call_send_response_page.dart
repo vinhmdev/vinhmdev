@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vinhmdev/src/core/app_utils.dart';
@@ -8,6 +9,37 @@ import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_send_re
 class DevApiCallSendResponsePage extends StatelessWidget {
   const DevApiCallSendResponsePage({super.key});
 
+  String? getInfoRequest(BuildContext context, DevApiCallRequestState? state) {
+    RequestOptions? requestInfo = state?.response?.requestOptions ?? state?.dioError?.requestOptions;
+    if (requestInfo == null) {
+      return null;
+    }
+    return '# >>> ${requestInfo.method  ?? '<Nothing>'}\n${requestInfo.uri ?? '<Nothing>'}\n\n'
+        '# >>> Headers:\n${AppUtils.prettyJson(requestInfo.headers ?? '<Nothing>')}\n\n'
+        '# >>> Body:\n${AppUtils.prettyJson(requestInfo.data ?? '<Nothing>')}'; // todo lang;
+  }
+
+  String? getInfoResponse(BuildContext context, DevApiCallRequestState? state) {
+    Response? response = state?.response;
+    if (response == null) {
+      return null;
+    }
+    return '# >>> Status:\n${response.statusCode  ?? '<Nothing>'} ${response.statusMessage ?? '<Nothing>'}\n\n'
+        '# >>> Headers:\n${AppUtils.prettyJson(response.headers.map ?? '<Undefined>')}\n\n'
+        '# >>> Body:\n${AppUtils.prettyJson(response.data ?? '<Undefined>')}';
+  }
+
+  String? getInfoError(BuildContext context, DevApiCallRequestState? state) {
+    DioError? error = state?.dioError;
+    if (error == null) {
+      return null;
+    }
+    return '# >>> Message:\n${error.message ?? '<Nothing>'}\n\n'
+        '# >>> Header:\n${AppUtils.prettyJson(error.response?.headers.map ?? '<Nothing>')}\n\n'
+        '# >>> Status:\n${error.response?.statusCode  ?? '<Nothing>'} ${error.response?.statusMessage ?? '<Nothing>'}\n\n'
+        '# >>> Body:\n${AppUtils.prettyJson(error.response?.statusMessage  ?? '<Nothing>')}';
+  }
+
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<DevApiCallCubit>(context);
@@ -15,16 +47,18 @@ class DevApiCallSendResponsePage extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        BlocBuilder<DevApiCallCubit, DevApiCallState>(
-          builder: (context, st) {
-            DevApiCallRequestState? state;
-            if (st is DevApiCallRequestState) {
-              state = st;
+        BlocSelector<DevApiCallCubit, DevApiCallState, DevApiCallRequestState?>(
+          selector: (state) {
+            if (state is DevApiCallRequestState) {
+              return state;
             }
-            var requestInfo = state?.response?.requestOptions ?? state?.dioError?.requestOptions;
-            if (requestInfo == null) {
+            return null;
+          },
+          builder: (context, state) {
+            var infoRequest = getInfoRequest(context, state);
+            if (infoRequest == null) {
               return const Center(
-                child: Text('Nothing!'), // todo lang
+                child: Text('Request Not Found!'), // todo lang
               );
             }
 
@@ -32,9 +66,7 @@ class DevApiCallSendResponsePage extends StatelessWidget {
               children: [
                 InputJsonWidget(
                   textEditingController: TextEditingController(
-                    text: '# >>> ${requestInfo.method  ?? '<Nothing>'}\n${requestInfo.path ?? '<Nothing>'}\n\n'
-                        '# >>> Headers:\n${AppUtils.prettyJson(requestInfo.headers ?? '<Nothing>')}\n\n'
-                        '# >>> Body:\n${AppUtils.prettyJson(requestInfo.data ?? '<Nothing>')}', // todo lang
+                    text: infoRequest,
                   ),
                   title: 'Request status', // todo lang
                   label: 'Request info',
@@ -46,19 +78,16 @@ class DevApiCallSendResponsePage extends StatelessWidget {
             );
           },
         ),
-        BlocBuilder<DevApiCallCubit, DevApiCallState>(
-          buildWhen: (previous, current) {
-            if (current is DevApiCallRequestState && previous is DevApiCallRequestState) {
-              return previous.response != current.response; // todo equatable it
+        BlocSelector<DevApiCallCubit, DevApiCallState, DevApiCallRequestState?>(
+          selector: (state) {
+            if (state is DevApiCallRequestState) {
+              return state;
             }
-            return current is DevApiCallRequestState && previous is! DevApiCallRequestState;
+            return null;
           },
-          builder: (context, st) {
-            DevApiCallRequestState? state;
-            if (st is DevApiCallRequestState) {
-              state = st;
-            }
-            if (state?.response == null) {
+          builder: (context, state) {
+            String? infoResponse = getInfoResponse(context, state);
+            if (infoResponse == null) {
               return const SizedBox.shrink();
             }
             return Column(
@@ -66,9 +95,7 @@ class DevApiCallSendResponsePage extends StatelessWidget {
                 const SizedBox(height: 12,),
                 InputJsonWidget(
                   textEditingController: TextEditingController(
-                    text: '# >>> ${state?.response?.requestOptions.method  ?? '<Nothing>'}\n${state?.response?.requestOptions.uri ?? '<Nothing>'}\n\n'
-                        '# >>> Status:\n${state?.response?.statusCode  ?? '<Nothing>'}\n${state?.response?.statusMessage ?? '<Nothing>'}\n\n'
-                        '# >>> Body:\n${AppUtils.prettyJson(state?.response?.data ?? '<Undefined>')}', // todo lang
+                    text: infoResponse, // todo lang
                   ),
                   title: 'Response status', // todo lang
                   label: 'Response info',
@@ -80,19 +107,16 @@ class DevApiCallSendResponsePage extends StatelessWidget {
             );
           },
         ),
-        BlocBuilder<DevApiCallCubit, DevApiCallState>(
-          buildWhen: (previous, current) {
-            if (current is DevApiCallRequestState && previous is DevApiCallRequestState) {
-              return previous.dioError != current.dioError; // todo equatable it
+        BlocSelector<DevApiCallCubit, DevApiCallState, DevApiCallRequestState?>(
+          selector: (state) {
+            if (state is DevApiCallRequestState) {
+              return state;
             }
-            return current is DevApiCallRequestState && previous is! DevApiCallRequestState;
+            return null;
           },
-          builder: (context, st) {
-            DevApiCallRequestState? state;
-            if (st is DevApiCallRequestState) {
-              state = st;
-            }
-            if (state?.dioError == null) {
+          builder: (context, state) {
+            String? infoError = getInfoError(context, state);
+            if (infoError == null) {
               return const SizedBox.shrink();
             }
             return Column(
@@ -100,9 +124,7 @@ class DevApiCallSendResponsePage extends StatelessWidget {
                 const SizedBox(height: 12,),
                 InputJsonWidget(
                   textEditingController: TextEditingController(
-                    text: '# >>> Message:\n${state?.dioError?.message ?? '<Nothing>'}\n\n'
-                        '# >>> Status:\n${state?.dioError?.response?.statusCode  ?? '<Nothing>'} | ${state?.dioError?.response?.statusMessage ?? '<Nothing>'}\n\n'
-                        '# >>> Body:\n${AppUtils.prettyJson(state?.dioError?.response?.statusMessage  ?? '<Nothing>')}', // todo lang
+                    text: infoError, // todo lang
                   ),
                   title: 'Error status', // todo lang
                   label: 'Error info',

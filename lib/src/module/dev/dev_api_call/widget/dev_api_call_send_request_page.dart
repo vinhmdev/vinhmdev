@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:js';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -82,10 +83,12 @@ class DevApiCallSendRequestPage extends StatelessWidget {
           query += '&';
         }
         query += '$key=${value ?? ''}';
-        if (query.isNotEmpty && !query.startsWith('?')){
-          query = '?$query';
-        }
       });
+
+      if (query.isNotEmpty && !query.startsWith('?')){
+        query = '?$query';
+      }
+
       var uri = Uri.parse('$path$query');
       await cubit.sendRequest(
         uri: uri,
@@ -102,7 +105,6 @@ class DevApiCallSendRequestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -262,8 +264,8 @@ class InputJsonWidget extends StatelessWidget {
     }
   }
 
-  Future<void> copy() async {
-    await Clipboard.setData(ClipboardData(text: textEditingController?.text ?? ''));
+  Future<void> copy([BuildContext? context]) async {
+    await AppUtils.copyToClipboard(textEditingController?.text, context: context);
   }
 
   void add(
@@ -469,7 +471,7 @@ class InputJsonWidget extends StatelessWidget {
                 Visibility(
                   visible: isShowCopy,
                   child: ElevatedButton(
-                    onPressed: copy,
+                    onPressed: () => copy(context),
                     child: const Text('Copy'), // todo lang
                   ),
                 ),
