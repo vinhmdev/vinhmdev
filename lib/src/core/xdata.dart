@@ -8,12 +8,15 @@ import 'package:flutter/foundation.dart';
 import 'package:vinhmdev/firebase_options.dart';
 
 class XData {
-
   XData._();
 
   static const String keyDefaultLocalization = 'defaultLocalization';
   static const String keyDefautlThemeMode = 'defautlThemeMode';
   static const String keyTopicSubcribeNotification = 'notifications';
+
+  static const String keyApiCallConfigure = 'apiCallConfigure';
+
+  static const String firebaseDatabaseUrl = 'https://vinhmdev-default-rtdb.firebaseio.com';
 
   static const List<String> devApiCallMethodRequest = ['GET', 'POST', 'PUT', 'DELETE', 'PATH'];
   static const Map<String, String?> devApiCallHeaderRequest = {
@@ -39,7 +42,6 @@ class XData {
     );
     return _sharedPref!;
   }
-
   static Future<void> initConfig() async {
     try {
       await Firebase.initializeApp(
@@ -63,7 +65,7 @@ class XData {
   }
 
   static FirebaseAnalytics get fa => FirebaseAnalytics.instance;
-  static FirebaseDatabase get fdb => FirebaseDatabase.instance;
+  static FirebaseDatabase get fdb => (FirebaseDatabase.instance..databaseURL = firebaseDatabaseUrl);
   static FirebaseMessaging get fm => FirebaseMessaging.instance;
 
 }
@@ -75,4 +77,5 @@ class RouterName {
   static const String setting = '${index}setting/';
   static const String taskManager = '${index}task-manager/';
   static const String devApiCall = '${index}dev-api-call/';
+  static const String devApiCallSetting = '${devApiCall}dev-api-call-setting/';
 }

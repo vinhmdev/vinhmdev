@@ -1,10 +1,13 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vinhmdev/src/core/app_utils.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/dev_api_call_cubit.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/dev_api_call_state.dart';
-import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_send_request_page.dart';
+import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_send_request_view.dart';
 
 class DevApiCallSendResponsePage extends StatelessWidget {
   const DevApiCallSendResponsePage({super.key});
@@ -14,9 +17,14 @@ class DevApiCallSendResponsePage extends StatelessWidget {
     if (requestInfo == null) {
       return null;
     }
-    return '# >>> ${requestInfo.method  ?? '<Nothing>'}\n${requestInfo.uri ?? '<Nothing>'}\n\n'
+    var configure = state!.configure;
+    var result = '# >>> ${requestInfo.method  ?? '<Nothing>'}\n${requestInfo.uri ?? '<Nothing>'}\n\n'
         '# >>> Headers:\n${AppUtils.prettyJson(requestInfo.headers ?? '<Nothing>')}\n\n'
-        '# >>> Body:\n${AppUtils.prettyJson(requestInfo.data ?? '<Nothing>')}'; // todo lang;
+        '# >>> Body:\n${AppUtils.prettyJson(requestInfo.data ?? '<Nothing>')}'; // todo lang
+    if (configure.isRqstShowCurlInfo) {
+      result += '\n\n# >>> CURL:\n${AppUtils.getCurlReqeust(requestInfo)}';
+    }
+    return result;
   }
 
   String? getInfoResponse(BuildContext context, DevApiCallRequestState? state) {
@@ -61,7 +69,6 @@ class DevApiCallSendResponsePage extends StatelessWidget {
                 child: Text('Request Not Found!'), // todo lang
               );
             }
-
             return Column(
               children: [
                 InputJsonWidget(

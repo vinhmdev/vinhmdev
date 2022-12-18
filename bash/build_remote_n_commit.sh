@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cd ../../vinhmdev.github.io/ || return
+cd .. || return
+git pull
+cd ../vinhmdev.github.io/ || return
 git pull
 cd ../vinhmdev/bash/ || return
 

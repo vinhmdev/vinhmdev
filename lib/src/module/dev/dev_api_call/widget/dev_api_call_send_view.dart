@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_send_request_page.dart';
+import 'package:vinhmdev/src/module/dev/dev_api_call/dev_api_call_cubit.dart';
+import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_send_request_view.dart';
 
-import 'dev_api_call_send_response_page.dart';
+import 'dev_api_call_send_response_view.dart';
 
 class DevApiCallSendPage extends StatefulWidget {
   const DevApiCallSendPage({super.key});
@@ -24,6 +25,8 @@ class _DevApiCallSendPageState extends State<DevApiCallSendPage>
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<DevApiCallCubit>(context);
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
@@ -45,7 +48,7 @@ class _DevApiCallSendPageState extends State<DevApiCallSendPage>
           DevApiCallSendRequestPage(
             tabController: _tabController,
           ),
-          DevApiCallSendResponsePage(),
+          const DevApiCallSendResponsePage(),
         ],
       ),
     );

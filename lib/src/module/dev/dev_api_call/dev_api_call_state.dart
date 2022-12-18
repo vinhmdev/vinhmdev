@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:vinhmdev/src/datasource/repository/dev_api_call_configure.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_send_view.dart';
 
 class DevApiCallState {
@@ -33,27 +34,12 @@ class DevApiCallRequestState extends DevApiCallState {
   final Response? response;
   final DioError? dioError;
 
-  final bool isRqstShowCurlInfo;
-
-  final bool isRspShowHeadersInfo;
-  final bool isRspShowBodyInfo;
-  final bool isRspShowRequestInfo;
-
-  final bool isErShowHeadersInfo;
-  final bool isErShowBodyInfo;
-  final bool isErShowRequestInfo;
-
+  final DevApiCallConfigure configure;
 
   DevApiCallRequestState({
     this.response,
     this.dioError,
-    this.isRqstShowCurlInfo = true,
-    this.isRspShowHeadersInfo = true,
-    this.isRspShowBodyInfo = true,
-    this.isRspShowRequestInfo = true,
-    this.isErShowHeadersInfo = true,
-    this.isErShowBodyInfo = true,
-    this.isErShowRequestInfo = true,
+    required this.configure,
     super.tabIndex,
     super.tabView,
   });
@@ -62,24 +48,12 @@ class DevApiCallRequestState extends DevApiCallState {
   DevApiCallRequestState copyDevApiCallRequestStateWith({
     Response? response,
     DioError? dioError,
-    bool? isRqstShowCurlInfo,
-    bool? isRspShowHeadersInfo,
-    bool? isRspShowBodyInfo,
-    bool? isRspShowRequestInfo,
-    bool? isErShowHeadersInfo,
-    bool? isErShowBodyInfo,
-    bool? isErShowRequestInfo,
+    DevApiCallConfigure? configure,
   }) {
     return DevApiCallRequestState(
       response: response ?? this.response,
       dioError: dioError ?? this.dioError,
-      isRqstShowCurlInfo: isRqstShowCurlInfo ?? this.isRqstShowCurlInfo,
-      isRspShowHeadersInfo: isRspShowHeadersInfo ?? this.isRspShowHeadersInfo,
-      isRspShowBodyInfo: isRspShowBodyInfo ?? this.isRspShowBodyInfo,
-      isRspShowRequestInfo: isRspShowRequestInfo ?? this.isRspShowRequestInfo,
-      isErShowHeadersInfo: isErShowHeadersInfo ?? this.isErShowHeadersInfo,
-      isErShowBodyInfo: isErShowBodyInfo ?? this.isErShowBodyInfo,
-      isErShowRequestInfo: isErShowRequestInfo ?? this.isErShowRequestInfo,
+      configure: configure ?? this.configure,
       tabIndex: super.tabIndex,
       tabView: super.tabView,
     );

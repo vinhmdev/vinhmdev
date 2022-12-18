@@ -1,12 +1,15 @@
 import 'dart:io';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:vinhmdev/l10n/generate/app_localizations.dart';
 import 'package:vinhmdev/src/core/xdata.dart';
+import 'package:vinhmdev/src/datasource/local_datasource.dart';
 import 'package:vinhmdev/src/datasource/rest_datasource.dart';
+import 'package:vinhmdev/src/datasource/services/firebase_services.dart';
+import 'package:vinhmdev/src/module/dev/dev_api_call/dev_api_call_cubit.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/dev_api_call_view.dart';
+import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_setting_view.dart';
 import 'package:vinhmdev/src/module/global/global_cubit.dart';
 import 'package:vinhmdev/src/module/global/global_state.dart';
 import 'package:vinhmdev/src/module/index/index_view.dart';
@@ -23,6 +26,7 @@ class _MyHttpOverride extends HttpOverrides {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = _MyHttpOverride();
 
   await XData.initConfig();
 
@@ -59,11 +63,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('>>> MyApp Rebuild');
-    return RepositoryProvider(
-      create: (context) => RestDatasource(),
-      child: BlocProvider(
-        create: (context) => GlobalCubit(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (context) => RestDatasource(FirebaseServices(XData.dio)),),
+        RepositoryProvider(create: (context) => LocalDatasource(),),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => GlobalCubit(),),
+          BlocProvider(create: (context) => DevApiCallCubit(RepositoryProvider.of<RestDatasource>(context),),),
+        ],
         child: BlocBuilder<GlobalCubit, GlobalState>(
           buildWhen: (previous, current) {
              bool isBuild = previous.locale?.languageCode != current.locale?.languageCode;
@@ -113,6 +122,9 @@ class MyApp extends StatelessWidget {
                 },
                 RouterName.devApiCall: (context) {
                   return wrapRouter(const DevApiCallPage());
+                },
+                RouterName.devApiCallSetting: (context) {
+                  return wrapRouter(const DevApiCallSettingPage());
                 },
               },
             );

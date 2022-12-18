@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:js';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vinhmdev/src/core/app_utils.dart';
 import 'package:vinhmdev/src/core/xdata.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/dev_api_call_cubit.dart';
+import 'package:vinhmdev/src/module/dev/dev_api_call/dev_api_call_state.dart';
 
 enum JsonType {
   auto, string, number, json, nullable;
@@ -40,8 +38,8 @@ class DevApiCallSendRequestPage extends StatelessWidget {
     try {
       return jsonDecode(_inputHeaderJson.text);
     }
-    catch (_) {
-      log(">>> headerRequest convert error: $_");
+    catch (error) {
+      log('>>> $error', error: error);
       return null;
     }
   }
@@ -50,8 +48,8 @@ class DevApiCallSendRequestPage extends StatelessWidget {
     try {
       return jsonDecode(_inputQueriesJson.text);
     }
-    catch (_) {
-      log(">>> queriesRequest convert error: $_");
+    catch (error) {
+      log('>>> $error', error: error);
       return {};
     }
   }
@@ -211,13 +209,28 @@ class DevApiCallSendRequestPage extends StatelessWidget {
           icon: const Icon(Icons.send),
           label: const Text('Request'), // todo lang
         ),
-        const SizedBox(height: 12,),
-        const InputJsonWidget(
-          iconTitle: Icon(Icons.add_box),
-          title: 'CURL request', // todo lang
-          label: 'CURL request content', // todo lang
-          isShowAddJson: false,
-          isShowPretty: false,
+        BlocSelector<DevApiCallCubit, DevApiCallState, RequestOptions?>(
+          selector: (state) {
+            if (state is DevApiCallRequestState) {
+              return state.response?.requestOptions ?? state.dioError?.requestOptions;
+            }
+            return null;
+          },
+          builder: (context, state) {
+            return Column(
+              children: [
+                const SizedBox(height: 12,),
+                InputJsonWidget(
+                  iconTitle: const Icon(Icons.add_box),
+                  textEditingController: TextEditingController(text: AppUtils.getCurlReqeust(state)),
+                  title: 'CURL request', // todo lang
+                  label: 'CURL request content', // todo lang
+                  isShowAddJson: false,
+                  isShowPretty: false,
+                ),
+              ],
+            );
+          },
         ),
         const SizedBox(height: 24,),
       ],
@@ -259,8 +272,8 @@ class InputJsonWidget extends StatelessWidget {
       var result = AppUtils.prettyJson(json);
       textEditingController?.text = result;
     }
-    catch (_) {
-      log(_.toString());
+    catch (error) {
+      log('>>> $error', error: error);
     }
   }
 
@@ -320,11 +333,11 @@ class InputJsonWidget extends StatelessWidget {
       var result = AppUtils.prettyJson(json);
       textEditingController?.text = result;
     }
-    catch (_) {
+    catch (error) {
       if (isThrowException) {
         rethrow;
       }
-      log(_.toString());
+      log('>>> $error', error: error);
     }
   }
 

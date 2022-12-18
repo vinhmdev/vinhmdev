@@ -1,6 +1,12 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:vinhmdev/src/core/app_utils.dart';
+import 'package:vinhmdev/src/core/xdata.dart';
+import 'package:vinhmdev/src/datasource/repository/dev_api_call_configure.dart';
 import 'package:vinhmdev/src/datasource/rest_datasource.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_history_view.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_send_view.dart';
@@ -11,7 +17,25 @@ class DevApiCallCubit extends Cubit<DevApiCallState> {
 
   final RestDatasource _restDatasource;
 
+  DatabaseReference ref = XData.fdb.ref('/accounts/${AppUtils.emailToUsername('mvinhle22@gmail.com')}/dev_api_call/configure');
+
   DevApiCallCubit(this._restDatasource) : super(DevApiCallState().init());
+
+  DevApiCallConfigure? _configure;
+  Future<DevApiCallConfigure> getConfigure () async {
+    if (null == _configure) {
+      var snapshot = await ref.get();
+      try {
+        _configure = DevApiCallConfigure.fromJson(snapshot.value);
+      }
+      catch (error) {
+        log('>>> $error', error: error);
+        _configure = DevApiCallConfigure();
+      }
+    }
+    return _configure!;
+  }
+
 
   void changeTab(int? tabIndex) {
     tabIndex ??= 0;
@@ -47,11 +71,22 @@ class DevApiCallCubit extends Cubit<DevApiCallState> {
         headers: headers,
         body: body,
       );
-      emit(DevApiCallRequestState(response: response));
+      emit(DevApiCallRequestState(
+        response: response,
+        configure: _configure ?? await getConfigure(),
+      ));
     }
     on DioError catch (dioError) {
-      emit(DevApiCallRequestState(dioError: dioError));
+      emit(DevApiCallRequestState(
+        dioError: dioError,
+        configure: _configure ?? await getConfigure(),
+      ));
     }
+  }
+
+  Future<void> updateConfigure(DevApiCallConfigure configure) async {
+    await ref.set(configure.toJson());
+    _configure = configure;
   }
 
 }
