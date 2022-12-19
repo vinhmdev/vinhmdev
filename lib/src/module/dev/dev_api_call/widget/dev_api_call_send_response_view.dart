@@ -13,12 +13,14 @@ class DevApiCallSendResponsePage extends StatelessWidget {
   const DevApiCallSendResponsePage({super.key});
 
   String? getInfoRequest(BuildContext context, DevApiCallRequestState? state) {
-    RequestOptions? requestInfo = state?.response?.requestOptions ?? state?.dioError?.requestOptions;
+    RequestOptions? requestInfo =
+        state?.response?.requestOptions ?? state?.dioError?.requestOptions;
     if (requestInfo == null) {
       return null;
     }
     var configure = state!.configure;
-    var result = '# >>> ${requestInfo.method  ?? '<Nothing>'}\n${requestInfo.uri ?? '<Nothing>'}\n\n'
+    var result =
+        '# >>> ${requestInfo.method ?? '<Nothing>'}\n${requestInfo.uri ?? '<Nothing>'}\n\n'
         '# >>> Headers:\n${AppUtils.prettyJson(requestInfo.headers ?? '<Nothing>')}\n\n'
         '# >>> Body:\n${AppUtils.prettyJson(requestInfo.data ?? '<Nothing>')}'; // todo lang
     if (configure.isRqstShowCurlInfo) {
@@ -32,7 +34,7 @@ class DevApiCallSendResponsePage extends StatelessWidget {
     if (response == null) {
       return null;
     }
-    return '# >>> Status:\n${response.statusCode  ?? '<Nothing>'} ${response.statusMessage ?? '<Nothing>'}\n\n'
+    return '# >>> Status:\n${response.statusCode ?? '<Nothing>'} ${response.statusMessage ?? '<Nothing>'}\n\n'
         '# >>> Headers:\n${AppUtils.prettyJson(response.headers.map ?? '<Undefined>')}\n\n'
         '# >>> Body:\n${AppUtils.prettyJson(response.data ?? '<Undefined>')}';
   }
@@ -42,10 +44,10 @@ class DevApiCallSendResponsePage extends StatelessWidget {
     if (error == null) {
       return null;
     }
-    return '# >>> Message:\n${error.message ?? '<Nothing>'}\n\n'
+    return '# >>> Message:\n$error\n${error.message ?? '<Nothing>'}\n\n'
         '# >>> Header:\n${AppUtils.prettyJson(error.response?.headers.map ?? '<Nothing>')}\n\n'
-        '# >>> Status:\n${error.response?.statusCode  ?? '<Nothing>'} ${error.response?.statusMessage ?? '<Nothing>'}\n\n'
-        '# >>> Body:\n${AppUtils.prettyJson(error.response?.statusMessage  ?? '<Nothing>')}';
+        '# >>> Status:\n${error.response?.statusCode ?? '<Nothing>'} ${error.response?.statusMessage ?? '<Nothing>'}\n\n'
+        '# >>> Body:\n${AppUtils.prettyJson(error.response?.statusMessage ?? '<Nothing>')}';
   }
 
   @override
@@ -99,7 +101,9 @@ class DevApiCallSendResponsePage extends StatelessWidget {
             }
             return Column(
               children: [
-                const SizedBox(height: 12,),
+                const SizedBox(
+                  height: 12,
+                ),
                 InputJsonWidget(
                   textEditingController: TextEditingController(
                     text: infoResponse, // todo lang
@@ -128,7 +132,9 @@ class DevApiCallSendResponsePage extends StatelessWidget {
             }
             return Column(
               children: [
-                const SizedBox(height: 12,),
+                const SizedBox(
+                  height: 12,
+                ),
                 InputJsonWidget(
                   textEditingController: TextEditingController(
                     text: infoError, // todo lang
@@ -146,5 +152,4 @@ class DevApiCallSendResponsePage extends StatelessWidget {
       ],
     );
   }
-
 }
