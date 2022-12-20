@@ -14,4 +14,4 @@ cd ../vinhmdev/ || return
 cp -rfv ./build/web/** ../vinhmdev.github.io
 cd bash || return
 
-echo "SUCCESS BUILD LOCAL"
+echo ">>> SUCCESS BUILD LOCAL"
