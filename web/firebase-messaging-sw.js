@@ -18,14 +18,17 @@ firebase.initializeApp(firebaseConfig);
 // Retrieve firebase messaging
 const messaging = firebase.messaging();
 
+//messaging.addEventListener('notificationclick', (event) => {
+//    console.log('>>>> click ');
+//});
+
+
 messaging.onBackgroundMessage(function(payload) {
     console.log("Received background message ", payload);
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
      body: payload.notification.body,
-     data: payload.notification.data,
-     icon: '/favicon.png',
-     image: '/favicon.png',
+     icon: '/icons/512.png'
     };
     self.registration.showNotification(notificationTitle, notificationOptions);
 });
