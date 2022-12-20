@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,12 +50,19 @@ class XData {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      // await fm.subscribeToTopic(keyTopicSubcribeNotification); // don't support web sdk
+
+      try {
+        await fm.subscribeToTopic(keyTopicSubcribeNotification); // don't support web sdk
+      }
+      catch (_) {
+        log('>>> fm.subscribeToTopic: don\'t support web sdk \n>>> $_');
+      }
+
       FirebaseMessaging.onMessage.listen((event) {
-        print('>>> onMessage.listen: >>> ${event.data} ${event.notification?.title} ${event.notification?.body}');
+        log('>>> onMessage.listen: >>> ${event.data} ${event.notification?.title} ${event.notification?.body}');
       });
     } catch (_) {
-      debugPrint(StackTrace.fromString(_.toString()).toString());
+      log('>>> $_', stackTrace: StackTrace.fromString(_.toString()));
       if (kDebugMode) {
         rethrow;
       }

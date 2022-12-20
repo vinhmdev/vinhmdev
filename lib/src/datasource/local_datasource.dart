@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:vinhmdev/src/core/xdata.dart';
-import 'package:vinhmdev/src/datasource/repository/dev_api_call_configure.dart';
+import 'package:vinhmdev/src/datasource/repositories/dev_api_call_configure.dart';
 
 class LocalDatasource {
   Future<DevApiCallConfigure> setApiCallConfigure(DevApiCallConfigure configure) async {
@@ -25,6 +25,7 @@ class LocalDatasource {
       return configure;
     }
     catch (_) {
+      log('>>> $_', stackTrace: StackTrace.current);
       return DevApiCallConfigure();
     }
   }

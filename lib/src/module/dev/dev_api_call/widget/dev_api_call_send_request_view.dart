@@ -25,7 +25,7 @@ class DevApiCallSendRequestPage extends StatelessWidget {
   final TextEditingController _inputHeaderJson = TextEditingController();
   final TextEditingController _inputQueriesJson = TextEditingController();
   final TextEditingController _inputBodyJson = TextEditingController();
-  final TextEditingController _inputCurlRequest = TextEditingController();
+  // final TextEditingController _inputCurlRequest = TextEditingController();
 
   DevApiCallSendRequestPage({super.key, required this.tabController});
 
@@ -183,21 +183,21 @@ class DevApiCallSendRequestPage extends StatelessWidget {
         const SizedBox(height: 12,),
         InputJsonWidget(
           textEditingController: _inputQueriesJson,
-          iconTitle: Icon(Icons.add_box),
+          iconTitle: const Icon(Icons.add_box),
           title: 'Queries', // todo lang
           label: 'Queries json', // todo lang
         ),
         const SizedBox(height: 12,),
         InputJsonWidget(
           textEditingController: _inputHeaderJson,
-          iconTitle: Icon(Icons.add_box),
+          iconTitle: const Icon(Icons.add_box),
           title: 'Header', // todo lang
           label: 'Header json', // todo lang
         ),
         const SizedBox(height: 12,),
         InputJsonWidget(
           textEditingController: _inputBodyJson,
-          iconTitle: Icon(Icons.add_box),
+          iconTitle: const Icon(Icons.add_box),
           title: 'Body', // todo lang
           label: 'Body json', // todo lang
         ),
@@ -349,19 +349,19 @@ class InputJsonWidget extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Add value'), // todo lang
+          title: const Text('Add value'), // todo lang
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: inputKey,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Key', // todo lang
                 ),
               ),
               TextField(
                 controller: inputValue,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Value', // todo lang
                 ),
                 minLines: 1,
@@ -375,7 +375,7 @@ class InputJsonWidget extends StatelessWidget {
                 backgroundColor: Theme.of(context).colorScheme.tertiary,
               ),
               onPressed: () => Navigator.of(context).maybePop(),
-              child: Text('Cancel'), // todo lang
+              child: const Text('Cancel'), // todo lang
             ),
             ElevatedButton(
               onPressed: () async {
@@ -406,22 +406,20 @@ class InputJsonWidget extends StatelessWidget {
                 catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(
-                        '$e',
-                      ),
+                      content: Text('$e',),
                       behavior: SnackBarBehavior.floating,
                     ),
                   );
                 }
               },
-              child: Text('Type'), // todo lang
+              child: const Text('Type'), // todo lang
             ),
             ElevatedButton(
               onPressed: () {
                 add(inputKey.text, inputValue.text);
                 Navigator.of(context).maybePop();
               },
-              child: Text('OK'), // todo lang
+              child: const Text('OK'), // todo lang
             ),
           ],
         );

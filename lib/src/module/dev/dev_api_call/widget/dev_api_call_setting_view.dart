@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vinhmdev/src/datasource/repository/dev_api_call_configure.dart';
+import 'package:vinhmdev/src/datasource/repositories/dev_api_call_configure.dart';
 import 'package:vinhmdev/src/datasource/rest_datasource.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/dev_api_call_cubit.dart';
 

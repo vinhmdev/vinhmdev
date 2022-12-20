@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:vinhmdev/src/core/app_utils.dart';
 import 'package:vinhmdev/src/core/xdata.dart';
-import 'package:vinhmdev/src/datasource/repository/dev_api_call_configure.dart';
+import 'package:vinhmdev/src/datasource/repositories/dev_api_call_configure.dart';
 import 'package:vinhmdev/src/datasource/rest_datasource.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_history_view.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_send_view.dart';

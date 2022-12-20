@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:vinhmdev/src/datasource/repository/dev_api_call_configure.dart';
+import 'package:vinhmdev/src/datasource/repositories/dev_api_call_configure.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_send_view.dart';
 
 class DevApiCallState {
