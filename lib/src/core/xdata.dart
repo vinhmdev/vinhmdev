@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -51,30 +52,25 @@ class XData {
         options: DefaultFirebaseOptions.currentPlatform,
       );
 
-      try {
+      if (!kIsWeb) {
         await fm.subscribeToTopic(keyTopicSubcribeNotification); // don't support web sdk
-      }
-      catch (_) {
-        log('>>> fm.subscribeToTopic: don\'t support web sdk \n>>> $_');
       }
 
       FirebaseMessaging.onMessage.listen((event) {
         log('>>> onMessage.listen: >>> ${event.data} ${event.notification?.title} ${event.notification?.body}');
       });
+
+      print('>>> fm.getToken(): ${await fm.getToken()}');
     } catch (_) {
       log('>>> $_', stackTrace: StackTrace.fromString(_.toString()));
       if (kDebugMode) {
         rethrow;
       }
     }
-    try {
-      print('>>> fm.getToken() ${await fm.getToken()}');
-    } catch (_) {
-      print('>>> error: >>> $_');
-    }
   }
 
   static FirebaseAnalytics get fa => FirebaseAnalytics.instance;
+  static FirebaseAuth get fau => FirebaseAuth.instance;
   static FirebaseDatabase get fdb => (FirebaseDatabase.instance..databaseURL = firebaseDatabaseUrl);
   static FirebaseMessaging get fm => FirebaseMessaging.instance;
 

@@ -17,7 +17,10 @@ class DevApiCallCubit extends Cubit<DevApiCallState> {
 
   final RestDatasource _restDatasource;
 
-  DatabaseReference ref = XData.fdb.ref('/accounts/${AppUtils.emailToUsername('mvinhle22@gmail.com')}/dev_api_call/configure');
+  DatabaseReference get ref {
+    var email = XData.fau.currentUser?.email ?? XData.fau.currentUser?.uid ?? 'UserIsNull';
+    return XData.fdb.ref('/accounts/${AppUtils.emailToUsername(email)}/dev_api_call/configure');
+  }
 
   DevApiCallCubit(this._restDatasource) : super(DevApiCallState().init());
 
@@ -35,7 +38,6 @@ class DevApiCallCubit extends Cubit<DevApiCallState> {
     }
     return _configure!;
   }
-
 
   void changeTab(int? tabIndex) {
     tabIndex ??= 0;

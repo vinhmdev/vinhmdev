@@ -12,7 +12,10 @@ class GlobalCubit extends Cubit<GlobalState> {
   Future<void> init() async {
     String localeDefault = await XData.sharedPref.getString(XData.keyDefaultLocalization).catchError((_) => '');
     String themeIdDefault = await XData.sharedPref.getString(XData.keyDefautlThemeMode).catchError((_) => '');
-    GlobalState defaultState = GlobalState(status: InitStatus.success);
+    GlobalState defaultState = GlobalState(
+      status: InitStatus.success,
+      loginStatus: _isSignin() ? InitStatus.success : InitStatus.loading,
+    );
     if (localeDefault.isNotEmpty) {
       defaultState.locale = Locale(localeDefault);
     }
@@ -39,6 +42,17 @@ class GlobalCubit extends Cubit<GlobalState> {
       themeMode: newTheme,
       locale: locale,
     ));
+  }
+
+  void refreshSigin() {
+    emit(state.copyWith(
+      loginStatus: _isSignin() ? InitStatus.success : InitStatus.loading,
+    ));
+  }
+
+  bool _isSignin() {
+    var user = XData.fau.currentUser;
+    return user != null;
   }
 
 }

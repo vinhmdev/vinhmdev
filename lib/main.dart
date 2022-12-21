@@ -7,6 +7,7 @@ import 'package:vinhmdev/src/core/xdata.dart';
 import 'package:vinhmdev/src/datasource/local_datasource.dart';
 import 'package:vinhmdev/src/datasource/rest_datasource.dart';
 import 'package:vinhmdev/src/datasource/services/firebase_services.dart';
+import 'package:vinhmdev/src/module/authentication/authentication_view.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/dev_api_call_cubit.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/dev_api_call_view.dart';
 import 'package:vinhmdev/src/module/dev/dev_api_call/widget/dev_api_call_setting_view.dart';
@@ -39,24 +40,16 @@ class MyApp extends StatelessWidget {
   Widget wrapRouter(Widget page) {
     return BlocBuilder<GlobalCubit, GlobalState>(
       buildWhen: (pre, cur) {
-        return pre.status != cur.status;
+        return pre.status != cur.status || pre.loginStatus != cur.loginStatus;
       },
       builder: (context, state) {
-        return Stack(
-          children: [
-            page,
-            Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-              child: Visibility(
-                visible: state.status == InitStatus.loading,
-                child: const FlashPage(),
-              ),
-            ),
-          ],
-        );
+        if (state.status == InitStatus.loading) {
+          return const FlashPage();
+        }
+        if (XData.fau.currentUser != null) {
+          return page;
+        }
+        return const AuthenticationPage();
       },
     );
   }

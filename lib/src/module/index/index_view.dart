@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vinhmdev/l10n/generate/app_localizations.dart';
 import 'package:vinhmdev/src/core/xdata.dart';
+import 'package:vinhmdev/src/module/global/global_cubit.dart';
 import 'package:vinhmdev/src/module/setting/setting_view.dart';
 
 import '../home/global_view.dart';
@@ -106,7 +107,8 @@ class DrawerIndexPage extends StatelessWidget {
   }
 
   List<Map<String, dynamic>> drawerAction(BuildContext context) {
-    var lang = AppLocalizations.of(context);
+    final lang = AppLocalizations.of(context);
+    final globalCubit = BlocProvider.of<GlobalCubit>(context);
     return [
       {
         'prefixIcon': const Icon(Icons.home),
@@ -130,6 +132,16 @@ class DrawerIndexPage extends StatelessWidget {
         'prefixIcon': const Icon(Icons.task),
         'label': lang.devApiCallPage,
         'action': () => gotoPage(context, RouterName.devApiCall, usingRoot: true),
+        'headLine': true,
+        'suffixIcon': const Icon(Icons.outbond_outlined),
+      },
+      {
+        'prefixIcon': const Icon(Icons.logout),
+        'label': 'Sign out', // todo lang
+        'action': () async {
+          await XData.fau.signOut();
+          globalCubit.refreshSigin();
+        },
         'headLine': true,
         'suffixIcon': const Icon(Icons.outbond_outlined),
       },
