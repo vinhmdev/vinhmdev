@@ -176,16 +176,18 @@ class DevApiCallSendRequestPage extends StatelessWidget {
                     labelText: 'Input url request', // todo lang
                   ),
                 ),
+                const SizedBox(height: 24,),
+                InputJsonWidget(
+                  textEditingController: _inputQueriesJson,
+                  iconTitle: const Icon(Icons.add_box),
+                  title: 'Queries', // todo lang
+                  label: 'Queries json', // todo lang
+                  padding: EdgeInsets.zero,
+                  elevation: 0,
+                ),
               ],
             ),
           ),
-        ),
-        const SizedBox(height: 12,),
-        InputJsonWidget(
-          textEditingController: _inputQueriesJson,
-          iconTitle: const Icon(Icons.add_box),
-          title: 'Queries', // todo lang
-          label: 'Queries json', // todo lang
         ),
         const SizedBox(height: 12,),
         InputJsonWidget(
@@ -232,7 +234,6 @@ class DevApiCallSendRequestPage extends StatelessWidget {
             );
           },
         ),
-        const SizedBox(height: 24,),
       ],
     );
   }
@@ -250,6 +251,8 @@ class InputJsonWidget extends StatelessWidget {
   final bool isShowCopy;
   final bool isReadOnly;
   final bool isMonospacedFont;
+  final EdgeInsets? padding;
+  final double? elevation;
 
   const InputJsonWidget({
     super.key,
@@ -263,6 +266,8 @@ class InputJsonWidget extends StatelessWidget {
     this.isShowCopy = true,
     this.isMonospacedFont = true,
     this.isReadOnly = true,
+    this.padding,
+    this.elevation,
   });
 
   void prettyJson() {
@@ -429,8 +434,9 @@ class InputJsonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: elevation,
       child: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: padding ?? const EdgeInsets.all(8),
         child: Column(
           children: [
             Row(

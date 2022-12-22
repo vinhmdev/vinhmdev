@@ -13,18 +13,16 @@ class DevApiCallSendResponsePage extends StatelessWidget {
   const DevApiCallSendResponsePage({super.key});
 
   String? getInfoRequest(BuildContext context, DevApiCallRequestState? state) {
-    RequestOptions? requestInfo =
-        state?.response?.requestOptions ?? state?.dioError?.requestOptions;
+    RequestOptions? requestInfo = state?.response?.requestOptions ?? state?.dioError?.requestOptions;
     if (requestInfo == null) {
       return null;
     }
     var configure = state!.configure;
-    var result =
-        '# >>> ${requestInfo.method ?? '<Nothing>'}\n${requestInfo.uri ?? '<Nothing>'}\n\n'
-        '# >>> Headers:\n${AppUtils.prettyJson(requestInfo.headers ?? '<Nothing>')}\n\n'
-        '# >>> Body:\n${AppUtils.prettyJson(requestInfo.data ?? '<Nothing>')}'; // todo lang
+    var result = '# >>> ${requestInfo.method ?? '<Nothing>'}\n${requestInfo.uri ?? '<Nothing>'}\n\n'
+        '# >>> Request Headers:\n${AppUtils.prettyJson(requestInfo.headers ?? '<Nothing>')}\n\n'
+        '# >>> Request Body:\n${AppUtils.prettyJson(requestInfo.data ?? '<Nothing>')}'; // todo lang
     if (configure.isRqstShowCurlInfo) {
-      result += '\n\n# >>> CURL:\n${AppUtils.getCurlReqeust(requestInfo)}';
+      result += '\n\n# >>> Request CURL:\n${AppUtils.getCurlReqeust(requestInfo)}';
     }
     return result;
   }
@@ -34,9 +32,24 @@ class DevApiCallSendResponsePage extends StatelessWidget {
     if (response == null) {
       return null;
     }
-    return '# >>> Status:\n${response.statusCode ?? '<Nothing>'} ${response.statusMessage ?? '<Nothing>'}\n\n'
-        '# >>> Headers:\n${AppUtils.prettyJson(response.headers.map ?? '<Undefined>')}\n\n'
-        '# >>> Body:\n${AppUtils.prettyJson(response.data ?? '<Undefined>')}';
+    var configure = state!.configure;
+    var result =  '';
+    if (configure.isRspShowRequestInfo) {
+      result += '${getInfoRequest(context, state)}\n\n' ?? '';
+    }
+    if (configure.isRspShowMessageInfo) {
+      result += '# >>> Response Message: ${response.statusMessage ?? '<Nothing>'}';
+    }
+    if (configure.isRspShowStatusInfo) {
+      result += '# >>> Response Status: ${response.statusCode ?? '<Nothing>'} | ${response.statusMessage ?? '<Nothing>'}';
+    }
+    if (configure.isRspShowHeadersInfo) {
+      result += '# >>> Response Headers:\n${AppUtils.prettyJson(response.headers.map ?? '<Undefined>')}\n\n';
+    }
+    if (configure.isRspShowBodyInfo) {
+      result += '# >>> Response Body:\n${AppUtils.prettyJson(response.data ?? '<Undefined>')}\n\n';
+    }
+    return result;
   }
 
   String? getInfoError(BuildContext context, DevApiCallRequestState? state) {
@@ -44,10 +57,25 @@ class DevApiCallSendResponsePage extends StatelessWidget {
     if (error == null) {
       return null;
     }
-    return '# >>> Message:\n$error\n${error.message ?? '<Nothing>'}\n\n'
-        '# >>> Header:\n${AppUtils.prettyJson(error.response?.headers.map ?? '<Nothing>')}\n\n'
-        '# >>> Status:\n${error.response?.statusCode ?? '<Nothing>'} ${error.response?.statusMessage ?? '<Nothing>'}\n\n'
-        '# >>> Body:\n${AppUtils.prettyJson(error.response?.statusMessage ?? '<Nothing>')}';
+    var configure = state!.configure;
+    var result =  '';
+    if (configure.isErShowRequestInfo) {
+      result += '${getInfoRequest(context, state)}\n\n' ?? '';
+    }
+    if (configure.isErShowMessageInfo) {
+      result += '# >>> Error Message:\n${error.message ?? '<Nothing>'}\n\n';
+      log('>>> $error');
+    }
+    if (configure.isErShowStatusInfo) {
+      result += '# >>> Error Status:\n${error.response?.statusCode ?? '<Nothing>'} ${error.response?.statusMessage ?? '<Nothing>'}\n\n';
+    }
+    if (configure.isErShowHeadersInfo) {
+      result += '# >>> Error Header:\n${AppUtils.prettyJson(error.response?.headers.map ?? '<Nothing>')}\n\n';
+    }
+    if (configure.isErShowBodyInfo) {
+      result += '# >>> Error Body:\n${AppUtils.prettyJson(error.response?.data ?? '<Nothing>')}';
+    }
+    return result;
   }
 
   @override

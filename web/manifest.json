@@ -1,6 +1,6 @@
 {
-    "name": "Vinh mDev",
-    "short_name": "vinhmdev",
+    "name": "Mini Dev",
+    "short_name": "mDev",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

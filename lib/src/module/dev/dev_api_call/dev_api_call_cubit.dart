@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -29,7 +30,7 @@ class DevApiCallCubit extends Cubit<DevApiCallState> {
     if (null == _configure) {
       var snapshot = await ref.get();
       try {
-        _configure = DevApiCallConfigure.fromJson(snapshot.value);
+        _configure = DevApiCallConfigure.fromJson(jsonDecode(jsonEncode(snapshot.value)));
       }
       catch (error) {
         log('>>> $error', error: error);
@@ -86,9 +87,35 @@ class DevApiCallCubit extends Cubit<DevApiCallState> {
     }
   }
 
-  Future<void> updateConfigure(DevApiCallConfigure configure) async {
-    await ref.set(configure.toJson());
+  Future<void> updateConfigure(DevApiCallConfigure configure, [bool isSynchronous = true]) async {
+    if (isSynchronous) {
+      await ref.set(configure.toJson());
+    }
     _configure = configure;
+    if (state is DevApiCallRequestState) {
+      emit((state as DevApiCallRequestState).copyDevApiCallRequestStateWith(
+        configure: configure,
+      ));
+    }
+    else {
+      emit(DevApiCallRequestState(
+        configure: configure,
+      ));
+    }
+  }
+
+  Future<void> clearCacheConfigure() async {
+    _configure = null;
+    if (state is DevApiCallRequestState) {
+      emit((state as DevApiCallRequestState).copyDevApiCallRequestStateWith(
+        configure: await getConfigure(),
+      ));
+    }
+    else {
+      emit(DevApiCallRequestState(
+        configure: await getConfigure(),
+      ));
+    }
   }
 
 }

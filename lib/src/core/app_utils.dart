@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vinhmdev/l10n/generate/app_localizations.dart';
 
 class AppUtils {
   AppUtils._();
@@ -39,7 +40,7 @@ class AppUtils {
     try {
       String curl = 'curl --request ${requestInfo.method}';
       if ((requestInfo.data?.toString() ?? '').isNotEmpty) {
-        curl += ' ${jsonEncode(requestInfo.data)}';
+        curl += ' --data ${jsonEncode(requestInfo.data)}';
       }
       if (requestInfo.headers.isNotEmpty) {
         requestInfo.headers.forEach((e, v) {
@@ -51,7 +52,7 @@ class AppUtils {
           curl += ' --header "$e: $vr"';
         });
       }
-      curl += ' ${requestInfo.path}';
+      curl += ' ${Uri.encodeFull(requestInfo.path)}';
       return curl;
     } catch (_) {
       log('>>> $_', stackTrace: StackTrace.current);
