@@ -10,6 +10,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.17.0
+  package_info_plus: ^3.0.2
   cupertino_icons: ^1.0.2
   flutter_bloc: ^8.1.1
   dio: ^4.0.6
@@ -23,6 +24,7 @@ dependencies:
   firebase_remote_config: ^3.0.7
   firebase_auth: ^4.2.0
   google_sign_in: ^5.4.2
+  googleapis: ^9.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -45,9 +45,27 @@ class GlobalCubit extends Cubit<GlobalState> {
   }
 
   void refreshSigin() {
-    emit(state.copyWith(
-      loginStatus: _isSignin() ? InitStatus.success : InitStatus.loading,
-    ));
+    XData.fa.setUserId(
+      id: XData.fau.currentUser?.uid,
+    );
+    if (_isSignin()) {
+      <String,String?>{
+        'displayName': XData.fau.currentUser?.displayName,
+        'email': XData.fau.currentUser?.email,
+        'phoneNumber': XData.fau.currentUser?.phoneNumber,
+        'photoURL': XData.fau.currentUser?.photoURL,
+        'uid': XData.fau.currentUser?.uid,
+        'tenantId': XData.fau.currentUser?.tenantId,
+        'emailVerified': (XData.fau.currentUser?.emailVerified ?? false) ? 'true' : 'false',
+        'isAnonymous': (XData.fau.currentUser?.isAnonymous ?? false) ? 'true' : 'false',
+      }.forEach((key, value) {
+        XData.fa.setUserProperty(name: key, value: value);
+      });
+      emit(state.copyWith(loginStatus: InitStatus.success,));
+    }
+    else {
+      emit(state.copyWith(loginStatus: InitStatus.loading,));
+    }
   }
 
   bool _isSignin() {

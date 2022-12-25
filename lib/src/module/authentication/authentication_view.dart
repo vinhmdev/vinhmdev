@@ -17,7 +17,9 @@ class AuthenticationPage extends StatelessWidget {
   Future<UserCredential> signInWithGoogle() async {
     if (kIsWeb) {
       var googleAuthProvider = GoogleAuthProvider();
-      googleAuthProvider.addScope('https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/drive.appdata');
+      googleAuthProvider.addScope('https://www.googleapis.com/auth/calendar '
+          'https://www.googleapis.com/auth/drive.appdata '
+          'https://www.googleapis.com/auth/userinfo.profile');
       googleAuthProvider.setCustomParameters({
         'login_hint': 'user@example.com',
       });
@@ -53,7 +55,7 @@ class AuthenticationPage extends StatelessWidget {
               globalCubit.refreshSigin();
             }
           },
-          child: Text('Sign in with Google'),
+          child: Text('Sign in with Google'), // todo lang
         ),
       ),
     );

@@ -180,8 +180,8 @@
             "type": "image/png"
         },
         {
-            "src": "icons/Icon-maskable-192.png",
-            "sizes": "192x192",
+            "src": "icons/Icon-maskable-196.png",
+            "sizes": "196x196",
             "type": "image/png",
             "purpose": "maskable"
         },

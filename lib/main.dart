@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
@@ -77,8 +79,8 @@ class MyApp extends StatelessWidget {
               title: 'Quản lý cá nhân',
               themeMode: state.themeMode,
               theme: ThemeData(
-                primarySwatch: Colors.red,
-                primaryColor: Colors.red,
+                primarySwatch: Colors.blue,
+                primaryColor: Colors.blue,
                 appBarTheme: const AppBarTheme(
                   elevation: 2,
                 ),
@@ -89,8 +91,8 @@ class MyApp extends StatelessWidget {
                 listTileTheme: const ListTileThemeData(
                   horizontalTitleGap: 8,
                   minLeadingWidth: 0,
-                  textColor: Colors.red,
-                  iconColor: Colors.red
+                  textColor: Colors.blue,
+                  iconColor: Colors.blue,
                 )
               ),
               darkTheme: ThemeData.dark(),
@@ -106,6 +108,9 @@ class MyApp extends StatelessWidget {
                 Locale('en'),
               ],
               initialRoute: RouterName.index,
+              navigatorObservers: [
+                FirebaseAnalyticsObserver(analytics: XData.fa),
+              ],
               routes: {
                 RouterName.index: (context) {
                   return wrapRouter(IndexPage());

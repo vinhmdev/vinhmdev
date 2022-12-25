@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vinhmdev/l10n/generate/app_localizations.dart';
 import 'package:vinhmdev/src/core/xdata.dart';
 import 'package:vinhmdev/src/module/global/global_cubit.dart';
@@ -59,6 +63,9 @@ class IndexPage extends StatelessWidget {
       body: Navigator(
         key: navigatorKey,
         initialRoute: RouterName.home,
+        observers: [
+          FirebaseAnalyticsObserver(analytics: XData.fa),
+        ],
         onGenerateRoute: (settings) {
           Widget? page;
           switch (settings.name) {
@@ -70,6 +77,7 @@ class IndexPage extends StatelessWidget {
               break;
           }
           if (page != null) {
+            XData.fa.logScreenView(screenName: settings.name, screenClass: 'IndexPage');
             cubit.setRouter(settings.name!);
             return MaterialPageRoute(
               builder: (_) => page!,
@@ -117,11 +125,6 @@ class DrawerIndexPage extends StatelessWidget {
         'headLine': true,
       },
       {
-        'prefixIcon': const Icon(Icons.settings),
-        'label': lang.settingPage,
-        'action': () => gotoPage(context, RouterName.setting),
-      },
-      {
         'prefixIcon': const Icon(Icons.task),
         'label': lang.taskManagerPage,
         'action': () => gotoPage(context, RouterName.taskManager, usingRoot: true),
@@ -136,13 +139,18 @@ class DrawerIndexPage extends StatelessWidget {
         'suffixIcon': const Icon(Icons.outbond_outlined),
       },
       {
+        'headLine': true,
+        'prefixIcon': const Icon(Icons.settings),
+        'label': lang.settingPage,
+        'action': () => gotoPage(context, RouterName.setting),
+      },
+      {
         'prefixIcon': const Icon(Icons.logout),
         'label': 'Sign out', // todo lang
         'action': () async {
           await XData.fau.signOut();
           globalCubit.refreshSigin();
         },
-        'headLine': true,
         'suffixIcon': const Icon(Icons.outbond_outlined),
       },
     ];
@@ -151,48 +159,65 @@ class DrawerIndexPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var lang = AppLocalizations.of(context);
+    Future<String> version = PackageInfo.fromPlatform().then((value) {
+      print('${value.packageName}: ${value.version}+${value.buildNumber}');
+      return '${value.packageName}: ${value.version}+${value.buildNumber}';
+    }).catchError((e) => 'vinhmdev');
+
     return Drawer(
-      child: ListView(
+      child: Column(
         children: [
-          ListTile(
-            onTap: () => closeDrawer(context),
-            title: Text(
-              lang.appAuthor,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            trailing: IgnorePointer(
-              ignoring: true,
-              child: ElevatedButton.icon(
-                  onPressed: () => closeDrawer(context),
-                  icon: const Icon(Icons.arrow_back),
-                  label: Text(lang.indexBack),
-              ),
+          Expanded(
+            child: ListView(
+              children: [
+                ListTile(
+                  onTap: () => closeDrawer(context),
+                  title: Text(
+                    lang.appAuthor,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: IgnorePointer(
+                    ignoring: true,
+                    child: ElevatedButton.icon(
+                        onPressed: () => closeDrawer(context),
+                        icon: const Icon(Icons.arrow_back),
+                        label: Text(lang.indexBack),
+                    ),
+                  ),
+                ),
+                ListView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: drawerAction(context).map((e) {
+                    return Column(
+                      children: [
+                        Visibility(
+                          visible: e['headLine'] ?? false,
+                          child: const Divider(),
+                        ),
+                        ListTile(
+                          onTap: e['action'],
+                          style: ListTileStyle.drawer,
+                          title: Text(
+                            e['label'],
+                          ),
+                          leading: e['prefixIcon'],
+                          trailing: e['suffixIcon'],
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              ],
             ),
           ),
-          ListView(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            children: drawerAction(context).map((e) {
-              return Column(
-                children: [
-                  Visibility(
-                    visible: e['headLine'] ?? false,
-                    child: const Divider(),
-                  ),
-                  ListTile(
-                    onTap: e['action'],
-                    style: ListTileStyle.drawer,
-                    title: Text(
-                      e['label'],
-                    ),
-                    leading: e['prefixIcon'],
-                    trailing: e['suffixIcon'],
-                  ),
-                ],
-              );
-            }).toList(),
+          FutureBuilder<String>(
+            future: version,
+            builder: (context, snapshot) {
+              return Text(snapshot.data ?? '<..>', style: Theme.of(context).textTheme.labelSmall,);
+            },
           ),
         ],
       ),
